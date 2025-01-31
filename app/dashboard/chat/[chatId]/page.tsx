@@ -1,17 +1,17 @@
 import ChatInterface from "@/components/ChatInterface";
-import { Id } from "@/convex/_generated/dataModel";
+//import { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 import { getConvexClient } from "@/lib/convex";
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
 
-interface ChatPageProps {
-  params: {
-    chatId: Id<"chats">;
-  };
-}
+// interface ChatPageProps {
+//   params: {
+//     chatId: Id<"chats">;
+//   };
+// }
 
-export default async function ChatPage({ params }: ChatPageProps) {
+export default async function ChatPage({ params }: any) {
   const { chatId } = await params;
 
   // Get user authentication
