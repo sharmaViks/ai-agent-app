@@ -5,7 +5,7 @@ import {
     SystemMessage,
     trimMessages,
   } from "@langchain/core/messages";
-  import { ChatAnthropic } from "@langchain/anthropic";
+  import { ChatGroq } from "@langchain/groq";
   import {
     END,
     MessagesAnnotation,
@@ -43,24 +43,19 @@ import {
   
   // Connect to the LLM provider with better tool instructions
   const initialiseModel = () => {
-    const model = new ChatAnthropic({
-      modelName: "claude-3-5-sonnet-20241022",
-      anthropicApiKey: process.env.ANTHROPIC_API_KEY,
+    const model = new ChatGroq({
+      modelName: "llama-3.3-70b-versatile",
+      apiKey: process.env.GROQ_API_KEY,
       temperature: 0.7,
       maxTokens: 1000,
       streaming: true,
-      clientOptions: {
-        defaultHeaders: {
-          "anthropic-beta": "prompt-caching-2024-07-31",
-        },
-      },
       callbacks: [
         {
           handleLLMStart: async () => {
             // console.log("🤖 Starting LLM call");
           },
           handleLLMEnd: async (output) => {
-            console.log("🤖 End LLM call", output);
+            //console.log("🤖 End LLM call", output);
             const usage = output.llmOutput?.usage;
             if (usage) {
               // console.log("📊 Token Usage:", {
@@ -175,7 +170,7 @@ import {
   
   export async function submitQuestion(messages: BaseMessage[], chatId: string) {
     // Add caching headers to messages
-    const cachedMessages = addCachingHeaders(messages);
+    const cachedMessages = messages;
     // console.log("🔒🔒🔒 Messages:", cachedMessages);
   
     // Create workflow with chatId and onToken callback
@@ -194,5 +189,6 @@ import {
         runId: chatId,
       }
     );
+    console.log("🔁 Stream:", stream);
     return stream;
   }
